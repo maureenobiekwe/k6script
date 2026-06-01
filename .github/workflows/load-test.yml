@@ -1,0 +1,51 @@
+name: k6 Performance Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup k6
+        uses: grafana/setup-k6-action@v1
+        with:
+          k6-version: 'latest'
+
+      - name: Run explore-load
+        continue-on-error: true
+        run: k6 run explore-load.js --out json=results-explore.json
+
+      - name: Run login-load
+        continue-on-error: true
+        run: k6 run login-load.js --out json=results-login-load.json
+        env:
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+
+      - name: Run login-spike
+        continue-on-error: true
+        run: k6 run login-spike.js --out json=results-login-spike.json
+        env:
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+
+      - name: Run generate-stress
+        continue-on-error: true
+        run: k6 run generate-stress.js --out json=results-generate.json
+        env:
+          AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+
+      - name: Upload k6 results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-test-results
+          path: results-*.json

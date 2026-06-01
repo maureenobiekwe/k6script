@@ -19,7 +19,7 @@ export const options = {
 };
 
 const BASE_URL = 'https://api.staging.anvila.hng14.com';
-const AUTH_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlNjllODIzMS02YmQ4LTQwZTMtYmVjOS03MjYyMmFkNmEzYTYiLCJpYXQiOjE3ODAyMzIzMjcsImV4cCI6MTc4MDIzNTkyNywicHVycG9zZSI6ImFjY2VzcyJ9.BerO6VknTRp-OO5IJaoSEaJdIMMDB20NkqTUcHciGao';
+const AUTH_TOKEN = __ENV.AUTH_TOKEN || 'paste_fallback_token_here';
 
 const descriptions = [
   'A marketing strategist who writes SEO blog posts',

@@ -22,8 +22,8 @@ const BASE_URL = 'https://api.staging.anvila.hng14.com';
 
 export default function () {
   const payload = JSON.stringify({
-    email: 'ugoamara409@gmail.com',
-    password: '2fwbY3H5TwAPzkX>',
+    email: __ENV.TEST_USER_EMAIL || 'ugoamara409@gmail.com',
+    password: __ENV.TEST_USER_PASSWORD || 'fallback_password',
   });
   const params = { headers: { 'Content-Type': 'application/json' } };
   const res = http.post(`${BASE_URL}/api/v1/auth/login`, payload, params);
