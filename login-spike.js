@@ -4,7 +4,7 @@ import { Rate, Trend, Counter } from 'k6/metrics';
 
 const errorRate = new Rate('error_rate');
 const spikeErrors = new Counter('spike_errors');
-const spikeDuration = new Trend('spike_duration', true);
+const spikeDuration = new Trend('spike_duration', true); 
 
 export const options = {
   stages: [
